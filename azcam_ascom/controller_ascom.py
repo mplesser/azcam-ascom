@@ -34,8 +34,6 @@ class ControllerASCOM(Controller):
         self.driver = ""
         self.camera = None
 
-        self.initialize()
-
     def initialize(self):
         """
         Initialize the controller interface.
