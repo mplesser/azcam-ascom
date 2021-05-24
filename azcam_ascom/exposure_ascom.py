@@ -108,9 +108,14 @@ class ExposureASCOM(Exposure):
         # ASCOM fills array Y then X do transpose
         self.image.transposed_image = 1
         # size = azcam.db.controller.camera.NumX * azcam.db.controller.camera.NumY  # can be wrong
-        size = azcam.db.controller.detpars.numcols_image * azcam.db.controller.detpars.numrows_image
+        size = (
+            azcam.db.controller.detpars.numcols_image
+            * azcam.db.controller.detpars.numrows_image
+        )
         self.image.data[0] = (
-            numpy.array(azcam.db.controller.camera.ImageArray).reshape(size).astype("uint16")
+            numpy.array(azcam.db.controller.camera.ImageArray)
+            .reshape(size)
+            .astype("uint16")
         )
 
         self.exposure_flag = self.exposureflags["WRITING"]
@@ -127,8 +132,12 @@ class ExposureASCOM(Exposure):
         # update controller header with keywords which might have changed
         et = float(int(self.exposure_time_actual * 1000.0) / 1000.0)
         dt = float(int(self.dark_time * 1000.0) / 1000.0)
-        azcam.db.headers["exposure"].set_keyword("EXPTIME", et, "Exposure time (seconds)", float)
-        azcam.db.headers["exposure"].set_keyword("DARKTIME", dt, "Dark time (seconds)", float)
+        azcam.db.headers["exposure"].set_keyword(
+            "EXPTIME", et, "Exposure time (seconds)", float
+        )
+        azcam.db.headers["exposure"].set_keyword(
+            "DARKTIME", dt, "Dark time (seconds)", float
+        )
 
         # write file(s) to disk
         if self.save_file:
