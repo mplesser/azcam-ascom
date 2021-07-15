@@ -8,7 +8,7 @@ from datetime import datetime
 import win32com.client
 
 import azcam
-from azcam.controller import Controller
+from azcam.tools.controller import Controller
 
 
 class ControllerASCOM(Controller):

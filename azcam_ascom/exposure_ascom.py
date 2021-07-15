@@ -7,7 +7,7 @@ import time
 import numpy
 
 import azcam
-from azcam.exposure import Exposure
+from azcam.tools.exposure import Exposure
 
 
 class ExposureASCOM(Exposure):
