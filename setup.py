@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="azcam-ascom",
-    version="21.0.0",
+    version="21.0.1",
     description="azcam extension for ASCOM cameras",
     long_description=long_description,
     long_description_content_type="text/markdown",
