@@ -24,9 +24,9 @@ class TempConASCOM(TempCon):
         Defines and resets instrument keywords.
         """
 
-        self.set_keyword("CAMTEMP", 0.0, "Camera temperature", float)
-        self.set_keyword("DEWTEMP", "", "Dewar temperature", float)
-        self.set_keyword("TEMPUNIT", "C", "Temperature units", str)
+        self.set_keyword("CAMTEMP", 0.0, "Camera temperature", "float")
+        self.set_keyword("DEWTEMP", "", "Dewar temperature", "float")
+        self.set_keyword("TEMPUNIT", "C", "Temperature units", "str")
 
         return
 
@@ -48,9 +48,7 @@ class TempConASCOM(TempCon):
 
         return
 
-    def set_control_temperature(
-        self, temperature: float = None, temperature_id: int = 0
-    ):
+    def set_control_temperature(self, temperature: float = None, temperature_id: int = 0):
         """
         Set control temperature in Celsius.
         Args:
