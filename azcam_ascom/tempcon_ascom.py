@@ -64,10 +64,10 @@ class TempConASCOM(TempCon):
             self.control_temperature = float(temperature)
 
         # turn cooler ON
-        azcam.db.tempcon.set_cooler(1)
+        azcam.db.tools["tempcon"].set_cooler(1)
 
         if temperature_id == 0:
-            azcam.db.controller.camera.SetCCDTemperature = temperature
+            azcam.db.tools["controller"].camera.SetCCDTemperature = temperature
 
         return
 
@@ -96,7 +96,7 @@ class TempConASCOM(TempCon):
         else:
             raise azcam.AzcamError("bad temperature_id in get_temperature")
 
-        reply = azcam.db.controller.camera.CCDTemperature
+        reply = azcam.db.tools["controller"].camera.CCDTemperature
         try:
             temp = float(reply)
         except ValueError:
@@ -113,7 +113,7 @@ class TempConASCOM(TempCon):
             temperature: temperature read
         """
 
-        return azcam.db.controller.camera.CoolerPower
+        return azcam.db.tools["controller"].camera.CoolerPower
 
     def set_cooler(self, state):
         """
@@ -122,6 +122,6 @@ class TempConASCOM(TempCon):
             state: 1 for ON, 0 for OFF
         """
 
-        azcam.db.controller.camera.CoolerOn = state
+        azcam.db.tools["controller"].camera.CoolerOn = state
 
         return

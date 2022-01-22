@@ -37,9 +37,9 @@ class ExposureASCOM(Exposure):
 
         # close instrument shutter for darks and zeros
         if shutterstate:
-            azcam.db.instrument.comps_on()
+            azcam.db.tools["instrument"].comps_on()
         else:
-            azcam.db.instrument.comps_off()
+            azcam.db.tools["instrument"].comps_off()
 
         # start exposure
         if imagetype != "zero":
@@ -47,7 +47,7 @@ class ExposureASCOM(Exposure):
 
         self.exp_start = time.time()
         self.dark_time_start = self.exp_start
-        azcam.db.controller.start_exposure()
+        azcam.db.tools["controller"].start_exposure()
 
         # wait for integration
         time.sleep(self.exposure_time)
@@ -61,7 +61,7 @@ class ExposureASCOM(Exposure):
         else:
             self.exposure_flag = self.exposureflags["READ"]
 
-        azcam.db.instrument.comps_off()
+        azcam.db.tools["instrument"].comps_off()
 
         if self.image_type.lower() != "zero":
             azcam.log("integration finished", level=2)
@@ -79,7 +79,7 @@ class ExposureASCOM(Exposure):
         azcam.log("Readout started")
 
         try:
-            azcam.db.controller.is_imageready(1)
+            azcam.db.tools["controller"].is_imageready(1)
         except azcam.AzcamError:
             self.exposure_flag = self.exposureflags["ABORT"]
             return
@@ -89,7 +89,7 @@ class ExposureASCOM(Exposure):
 
         imagetype = self.image_type.lower()
         if imagetype == "ramp":
-            azcam.db.controller.set_shutter_state(0)
+            azcam.db.tools["controller"].set_shutter_state(0)
 
         if self.exposure_flag == self.exposureflags["ABORT"]:
             azcam.log("Readout aborted")
@@ -107,10 +107,15 @@ class ExposureASCOM(Exposure):
         # this can be slow for big image
         # ASCOM fills array Y then X do transpose
         self.image.transposed_image = 1
-        # size = azcam.db.controller.camera.NumX * azcam.db.controller.camera.NumY  # can be wrong
-        size = azcam.db.controller.detpars.numcols_image * azcam.db.controller.detpars.numrows_image
+        # size = azcam.db.tools["controller"].camera.NumX * azcam.db.tools["controller"].camera.NumY  # can be wrong
+        size = (
+            azcam.db.tools["controller"].detpars.numcols_image
+            * azcam.db.tools["controller"].detpars.numrows_image
+        )
         self.image.data[0] = (
-            numpy.array(azcam.db.controller.camera.ImageArray).reshape(size).astype("uint16")
+            numpy.array(azcam.db.tools["controller"].camera.ImageArray)
+            .reshape(size)
+            .astype("uint16")
         )
 
         self.exposure_flag = self.exposureflags["WRITING"]
@@ -174,4 +179,4 @@ class ExposureASCOM(Exposure):
         Return remaining exposure time (in seconds).
         """
 
-        return azcam.db.controller.update_exposuretime_remaining()
+        return azcam.db.tools["controller"].update_exposuretime_remaining()

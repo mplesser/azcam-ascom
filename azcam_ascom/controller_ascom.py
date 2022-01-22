@@ -90,7 +90,7 @@ class ControllerASCOM(Controller):
 
         self.set_roi()
 
-        self.set_exposuretime(azcam.db.exposure.exposure_time)
+        self.set_exposuretime(azcam.db.tools["exposure"].exposure_time)
 
         return
 
