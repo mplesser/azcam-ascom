@@ -153,7 +153,7 @@ class ExposureASCOM(Exposure):
 
             if self.send_image:
                 azcam.log("Sending image")
-                azcam.db.sendimage.send_image()
+                azcam.db.tools["sendimage"].send_image()
 
         # image data and file are now ready
         self.image.toggle = 1
