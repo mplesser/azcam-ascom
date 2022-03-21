@@ -25,7 +25,7 @@ class TempConASCOM(TempCon):
         """
 
         self.set_keyword("CAMTEMP", 0.0, "Camera temperature", "float")
-        self.set_keyword("DEWTEMP", "", "Dewar temperature", "float")
+        self.set_keyword("DEWTEMP", 0.0, "Dewar temperature", "float")
         self.set_keyword("TEMPUNIT", "C", "Temperature units", "str")
 
         return
